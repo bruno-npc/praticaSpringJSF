@@ -50,10 +50,9 @@ public class PessoaService {
     }
 
     @Transactional
-    public void deletarPessoa(int id) {
-        Long idPessoa = (long) id;
+    public void deletarPessoa(Long id) {
         pessoaSalarioRepository.deleteByIdPessoa(id);
-        pessoaRepository.deleteByIdPessoa(idPessoa);
+        pessoaRepository.deleteByIdPessoa(id);
     }
 
     public Pessoa buscarPessoa(Long id) {

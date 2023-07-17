@@ -127,7 +127,7 @@ public class HomeBean {
     }
 
     public void deletarPessoa() {
-        pessoaService.deletarPessoa(dto.getId().intValue());
+        pessoaService.deletarPessoa(dto.getId());
     }
 
     public void reloadPage(){

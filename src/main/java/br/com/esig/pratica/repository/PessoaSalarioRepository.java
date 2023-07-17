@@ -22,7 +22,7 @@ public interface PessoaSalarioRepository extends JpaRepository<PessoaSalario, Lo
 
     @Modifying
     @Query("DELETE FROM PessoaSalario ps WHERE ps.pessoa.id = :id")
-    void deleteByIdPessoa(@Param("id") int id);
+    void deleteByIdPessoa(@Param("id") Long id);
 
     @Modifying
     @Query("UPDATE PessoaSalario ps SET ps.salario = :salario WHERE ps.pessoa.id = :id")

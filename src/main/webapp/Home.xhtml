@@ -109,7 +109,7 @@
     </p:dialog>
 
     <!-- Modal para visualizar e editar dados das pessoas -->
-    <p:dialog widgetVar="modalFuncionario" modal="true" resizable="false" header="Editar Funcionario">
+    <p:dialog widgetVar="modalFuncionario" modal="true" resizable="true" header="Editar Funcionario">
         <h:form id="modalFuncionarioFrom">
             <h:panelGrid id = "panelFuncionario" columns = "2" border = "1"
                          cellpadding = "10" cellspacing = "1">
@@ -141,7 +141,7 @@
                 <h:outputLabel value="Data de Nascimento" />
                 <p:inputText value="#{pessoaBean.pessoa.dataNascimento}" />
 
-                <h:outputLabel value="Salário" />
+                <h:outputLabel value="Salário por cargo" />
                 <h:outputLabel value="#{pessoaBean.pessoa.cargo.salario}" />
 
                 <h:outputLabel value="Cargo" />
