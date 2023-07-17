@@ -6,6 +6,76 @@
     <title>Cargos</title>
 </h:head>
 <h:body>
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Home" action="#{cargoBean.homePage()}"/>
+            <p:menuitem value="Adicionar Cargo"/>
+        </p:menubar>
+    </h:form>
+
+    <p:dataTable var="cargo"  value="#{cargoBean.cargoCompleteList}">
+        <p:column headerText="Nome">
+            <h:outputText value="#{cargo.nome}" />
+        </p:column>
+
+        <p:column headerText="Salário">
+            <h:outputText value="#{cargo.salario}" />
+        </p:column>
+
+        <p:column headerText="Ações">
+            <p:commandButton value="Editar"
+                             oncomplete="PF('modalEditar').show()"
+                             action="#{cargoBean.selecionarCargo(cargo.id, cargo.nome, cargo.salario)}"
+                             update=":modalCargoForm"/>
+
+            <p:commandButton value="Deletar"
+                             oncomplete="PF('modalExcluir').show()"
+                             action="#{cargoBean.selecionarCargo(cargo.id, cargo.nome, cargo.salario)}"
+                             update=":modalDeletarCargoFrom"/>
+        </p:column>
+    </p:dataTable>
+
+
+    <!-- Excluir cargo -->
+    <p:dialog widgetVar="modalExcluir" modal="true" resizable="false" header="Excluir cargo">
+        <h:form id="modalDeletarCargoFrom">
+            <h:panelGrid columns = "2" border = "1" cellpadding = "10" cellspacing = "1">
+                <f:facet name = "header">
+                    <h:outputLabel value = "Deletar Cargo: " />
+                    <h:outputText value = "#{cargoBean.cargoDTO.nome}" />
+                </f:facet>
+                <f:facet name = "footer">
+                    <h:panelGroup style = "display:block; text-align:center">
+                        <p:commandButton value="Cancelar" type="button" onclick="PF('modalExcluir').hide()" />
+                        <p:commandButton value="Confirmar" action="#{cargoBean.deletarCargo()}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modalExcluir').hide(); location.reload(); }" />
+                    </h:panelGroup>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+
+    <!-- Editar cargo -->
+    <p:dialog widgetVar="modalEditar" modal="true" resizable="false" header="Editar cargo">
+        <h:form id="modalCargoForm">
+            <h:panelGrid columns = "2" border = "1" cellpadding = "10" cellspacing = "1">
+
+                <h:outputLabel value = "Nome" />
+                <p:inputText value="#{cargoBean.cargoDTO.nome}" />
+
+                <h:outputLabel value="Salário" />
+                <p:inputText value="#{cargoBean.cargoDTO.salario}" />
+
+                <f:facet name = "footer">
+                    <h:panelGroup style = "display:block; text-align:center">
+                        <p:commandButton value="Fechar" type="button" onclick="PF('modalEditar').hide()" />
+                        <p:commandButton value="Salvar" action="#{cargoBean.atualizarCargo()}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modalEditar').hide(); location.reload(); }" />
+                    </h:panelGroup>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
 
 </h:body>
 </html>

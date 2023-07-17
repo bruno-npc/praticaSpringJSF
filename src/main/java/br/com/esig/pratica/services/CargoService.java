@@ -40,4 +40,8 @@ public class CargoService {
     public Cargo buscarPorNome(String nome) {
         return repository.buscarPorNome(nome);
     }
+
+    public List<Cargo> buscarTodos() {
+        return repository.findAll();
+    }
 }
