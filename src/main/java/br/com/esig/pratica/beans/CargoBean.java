@@ -7,8 +7,8 @@ import br.com.esig.pratica.services.PessoaSalarioService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.annotation.PostConstruct;
-import javax.el.MethodExpression;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;

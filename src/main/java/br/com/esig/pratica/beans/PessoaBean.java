@@ -9,6 +9,7 @@ import br.com.esig.pratica.services.PessoaService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 

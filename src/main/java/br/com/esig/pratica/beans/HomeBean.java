@@ -2,7 +2,6 @@ package br.com.esig.pratica.beans;
 
 
 import br.com.esig.pratica.dto.PessoaSalarioDTO;
-import br.com.esig.pratica.model.PessoaSalario;
 import br.com.esig.pratica.services.PessoaSalarioService;
 import br.com.esig.pratica.services.PessoaService;
 import lombok.Getter;
@@ -14,10 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.annotation.PostConstruct;
-import javax.el.MethodExpression;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.IOException;

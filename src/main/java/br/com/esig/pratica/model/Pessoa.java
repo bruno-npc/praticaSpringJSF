@@ -1,6 +1,7 @@
 package br.com.esig.pratica.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
