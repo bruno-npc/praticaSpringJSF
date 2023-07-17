@@ -70,7 +70,7 @@ public class HomeBean {
 
     public void atualizarPessoaSalario(){
         pessoaSalarioService.atualizarSalarioIndividual(dto.getId(), getSalarioEdit());
-        dtoList = pagePessoaSalario().getContent();
+        reloadPage();
     }
 
     public void selecionarPessoa (Long id, String nome, String pessoaSalario){
@@ -95,20 +95,20 @@ public class HomeBean {
 
     public void restaurarTabela(){
         pessoaSalarioService.atualizarAll();
-        dtoList = pagePessoaSalario().getContent();
+        reloadPage();
     }
 
     public void nextPage() {
         if (currentPage < totalPages) {
             currentPage++;
-            dtoList = pagePessoaSalario().getContent();
+            reloadPage();
         }
     }
 
     public void previousPage() {
         if (currentPage > 1) {
             currentPage--;
-            dtoList = pagePessoaSalario().getContent();
+            reloadPage();
         }
     }
 
@@ -118,6 +118,10 @@ public class HomeBean {
     }
 
     public void pesquisa(String pesquisa) {
+    }
+
+    public void reloadPage(){
+        dtoList = pagePessoaSalario().getContent();
     }
 
     private Page<PessoaSalarioDTO> pagePessoaSalario (){

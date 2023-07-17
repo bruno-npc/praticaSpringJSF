@@ -29,9 +29,15 @@
         </p:column>
 
         <p:column headerText="Ações">
-            <p:commandButton value="$" oncomplete="PF('modal').show()"
+            <p:commandButton value="$"
+                             oncomplete="PF('modal').show()"
                              action="#{homeBean.selecionarPessoa(pessoa.id, pessoa.nome, pessoa.salario)}"
                              update=":modalForm"/>
+
+            <p:commandButton value="Visualizar"
+                             oncomplete="PF('modalFuncionario').show()"
+                             action="#{pessoaBean.selecionarPessoa(pessoa.id)}"
+                             update=":modalFuncionarioFrom"/>
         </p:column>
     </p:dataTable>
 
@@ -46,7 +52,7 @@
 
 
 <!--###############################    Modais    ###############################-->
-    <p:dialog widgetVar="modal" modal="true" resizable="false" header="Editar Funcionario">
+    <p:dialog widgetVar="modal" modal="true" resizable="false" header="Editar Salário">
         <h:form id="modalForm">
             <h:panelGrid id = "panel" columns = "2" border = "1"
                          cellpadding = "10" cellspacing = "1">
@@ -62,6 +68,56 @@
                         <p:commandButton value="Fechar" type="button" onclick="PF('modal').hide()" />
                         <p:commandButton value="Salvar" action="#{homeBean.atualizarPessoaSalario()}"
                                          oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modal').hide(); location.reload(); }" />
+                    </h:panelGroup>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+
+    <!-- Modal para visualizar e editar dados das pessoas -->
+    <p:dialog widgetVar="modalFuncionario" modal="true" resizable="false" header="Editar Funcionario">
+        <h:form id="modalFuncionarioFrom">
+            <h:panelGrid id = "panelFuncionario" columns = "2" border = "1"
+                         cellpadding = "10" cellspacing = "1">
+
+                <h:outputLabel value = "Nome" />
+                <p:inputText value="#{pessoaBean.pessoa.nome}" />
+
+                <h:outputLabel value="Cidade" />
+                <p:inputText value="#{pessoaBean.pessoa.cidade}" />
+
+                <h:outputLabel value="Email" />
+                <p:inputText value="#{pessoaBean.pessoa.email}" />
+
+                <h:outputLabel value="CEP" />
+                <p:inputText value="#{pessoaBean.pessoa.cep}" />
+
+                <h:outputLabel value="Endereço" />
+                <p:inputText value="#{pessoaBean.pessoa.endereco}" />
+
+                <h:outputLabel value="País" />
+                <p:inputText value="#{pessoaBean.pessoa.pais}" />
+
+                <h:outputLabel value="Usuário" />
+                <p:inputText value="#{pessoaBean.pessoa.usuario}" />
+
+                <h:outputLabel value="Telefone" />
+                <p:inputText value="#{pessoaBean.pessoa.telefone}" />
+
+                <h:outputLabel value="Data de Nascimento" />
+                <p:inputText value="#{pessoaBean.pessoa.dataNascimento}" />
+
+                <h:outputLabel value="Salário" />
+                <h:outputLabel value="#{pessoaBean.pessoa.cargo.salario}" />
+
+                <h:outputLabel value="Cargo" />
+                <p:inputText value="#{pessoaBean.pessoa.cargo.nome}" />
+
+                <f:facet name = "footer">
+                    <h:panelGroup style = "display:block; text-align:center">
+                        <p:commandButton value="Fechar" type="button" onclick="PF('modalFuncionario').hide()" />
+                        <p:commandButton value="Salvar" action="#{pessoaBean.atualizarPessoa()}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modalFuncionario').hide(); location.reload(); }" />
                     </h:panelGroup>
                 </f:facet>
             </h:panelGrid>
