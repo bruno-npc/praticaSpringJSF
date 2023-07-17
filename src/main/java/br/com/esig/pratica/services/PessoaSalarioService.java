@@ -49,5 +49,4 @@ public class PessoaSalarioService {
     public BigDecimal converterToNumerico (String valor){
         return conversor.converterMonetarioToBigDecimal(valor);
     }
-
 }

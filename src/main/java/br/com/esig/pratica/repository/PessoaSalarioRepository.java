@@ -5,6 +5,7 @@ import br.com.esig.pratica.model.PessoaSalario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -21,4 +22,7 @@ public interface PessoaSalarioRepository extends JpaRepository<PessoaSalario, Lo
     @Query("SELECT ps FROM PessoaSalario ps WHERE ps.pessoa.id = :idPessoa")
     PessoaSalario findByPessoaId(@Param("idPessoa") Long idPessoa);
 
+    @Modifying
+    @Query("DELETE FROM PessoaSalario ps WHERE ps.pessoa.id = :id")
+    void deleteByIdPessoa(@Param("id") Long id);
 }

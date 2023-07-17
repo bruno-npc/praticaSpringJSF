@@ -4,6 +4,8 @@ import br.com.esig.pratica.model.Cargo;
 import br.com.esig.pratica.repository.CargoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CargoService {
 
@@ -31,4 +33,11 @@ public class CargoService {
         }
     }
 
+    public List<String> listarCargos() {
+        return repository.listarCargos();
+    }
+
+    public Cargo buscarPorNome(String nome) {
+        return repository.buscarPorNome(nome);
+    }
 }

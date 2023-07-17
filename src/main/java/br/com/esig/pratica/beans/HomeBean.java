@@ -4,6 +4,7 @@ package br.com.esig.pratica.beans;
 import br.com.esig.pratica.dto.PessoaSalarioDTO;
 import br.com.esig.pratica.model.PessoaSalario;
 import br.com.esig.pratica.services.PessoaSalarioService;
+import br.com.esig.pratica.services.PessoaService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class HomeBean {
     @Autowired
     private PessoaSalarioService pessoaSalarioService;
 
+    @Autowired
+    private PessoaService pessoaService;
+
     @Getter
     @Setter
     private PessoaSalarioDTO dto = new PessoaSalarioDTO(0l, "", "", "");
@@ -54,7 +58,6 @@ public class HomeBean {
 
     @Getter
     private int totalPages;
-
 
     @PostConstruct
     public void init() {
@@ -117,7 +120,8 @@ public class HomeBean {
         return PageRequest.of(pageNumber - 1, pageSize, sort);
     }
 
-    public void pesquisa(String pesquisa) {
+    public void deletarPessoa() {
+        pessoaService.deletarPessoa(dto.getId());
     }
 
     public void reloadPage(){

@@ -40,6 +40,7 @@ public class PessoaService {
     }
 
     public void deletarPessoa(Long id) {
+        pessoaSalarioRepository.deleteByIdPessoa(id);
         pessoaRepository.deleteById(id);
     }
 
