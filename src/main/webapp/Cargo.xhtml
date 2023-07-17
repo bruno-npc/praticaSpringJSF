@@ -9,7 +9,7 @@
     <h:form>
         <p:menubar>
             <p:menuitem value="Home" action="#{cargoBean.homePage()}"/>
-            <p:menuitem value="Adicionar Cargo"/>
+            <p:menuitem value="Adicionar Cargo" oncomplete="PF('modalAdd').show()" update=":modalAdicionarForm"/>
         </p:menubar>
     </h:form>
 
@@ -64,13 +64,36 @@
                 <p:inputText value="#{cargoBean.cargoDTO.nome}" />
 
                 <h:outputLabel value="Salário" />
-                <p:inputText value="#{cargoBean.cargoDTO.salario}" />
+                <p:inputNumber value="#{cargoBean.salarioEdit}" />
 
                 <f:facet name = "footer">
                     <h:panelGroup style = "display:block; text-align:center">
                         <p:commandButton value="Fechar" type="button" onclick="PF('modalEditar').hide()" />
                         <p:commandButton value="Salvar" action="#{cargoBean.atualizarCargo()}"
                                          oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modalEditar').hide(); location.reload(); }" />
+                    </h:panelGroup>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+
+    <!-- Adicionar cargo -->
+    <p:dialog widgetVar="modalAdd" modal="true" resizable="false" header="Editar cargo">
+        <h:form id="modalAdicionarForm">
+            <h:panelGrid columns = "2" border = "1" cellpadding = "10" cellspacing = "1">
+
+                <h:outputLabel value = "Nome" />
+                <p:inputText value="#{cargoBean.cargoDTO.nome}" />
+
+                <h:outputLabel value="Salário" />
+                <p:inputNumber value="#{cargoBean.salarioEdit}" />
+
+                <f:facet name = "footer">
+                    <h:panelGroup style = "display:block; text-align:center">
+                        <p:commandButton value="Fechar" type="button" onclick="PF('modalAdd').hide()" />
+                        <p:commandButton value="Salvar"
+                                         action="#{cargoBean.adicionarCargo()}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modalAdd').hide(); location.reload(); }" />
                     </h:panelGroup>
                 </f:facet>
             </h:panelGrid>

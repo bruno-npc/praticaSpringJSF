@@ -80,11 +80,7 @@ public class HomeBean {
         dto.setNome(nome);
         dto.setSalario(pessoaSalario);
         dto.setId(id);
-        String valorSemSimbolo = pessoaSalario.replace("R$", "");
-        String valorSemPonto = valorSemSimbolo.replace(".", "");
-        String valorSemVirgula = valorSemPonto.replace(",", ".");
-        String valorSemEspaco = valorSemVirgula.replace(" ", "");
-        salarioEdit = new BigDecimal(valorSemEspaco);
+        salarioEdit = pessoaSalarioService.converterToNumerico(pessoaSalario);
     }
 
     public void cargosPage() {

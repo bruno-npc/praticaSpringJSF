@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -32,11 +33,13 @@ public class PessoaSalarioService {
                 pageable);
     }
 
+    @Transactional
     public void atualizarAll() {
         String sql = "SELECT update_pessoa_salario()";
         jdbcTemplate.execute(sql);
     }
 
+    @Transactional
     public void atualizarSalarioIndividual(Long idPessoa, BigDecimal salario){
         String novoSalario = conversor.formatarValorMonetarioToString(salario);
         PessoaSalario updatePessoaSalario = repository.findByPessoaId(idPessoa);
@@ -48,5 +51,9 @@ public class PessoaSalarioService {
 
     public BigDecimal converterToNumerico (String valor){
         return conversor.converterMonetarioToBigDecimal(valor);
+    }
+
+    public String converterToString(BigDecimal salarioEdit) {
+        return conversor.formatarValorMonetarioToString(salarioEdit);
     }
 }

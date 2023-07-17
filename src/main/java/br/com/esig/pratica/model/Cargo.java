@@ -1,5 +1,6 @@
 package br.com.esig.pratica.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,4 +21,5 @@ public class Cargo {
 
     @Column(name = "salario", nullable = false)
     private String salario;
+
 }

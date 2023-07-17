@@ -1,8 +1,10 @@
 package br.com.esig.pratica.services;
 
+import br.com.esig.pratica.dto.CargoDTO;
 import br.com.esig.pratica.model.Cargo;
 import br.com.esig.pratica.repository.CargoRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,22 +17,28 @@ public class CargoService {
         this.repository = repository;
     }
 
-    public Cargo buscarCargo(Long id) {
-        return repository.findById(id).orElse(null);
+    @Transactional
+    public void atualizarCargo(CargoDTO dto) {
+        repository.saveDTO(dto, dto.getId().intValue());
     }
 
-    public void deletarCargo(Long id) {
-        repository.deleteById(id);
-    }
-
-    public void inserirCargo(Cargo cargo) {
+    @Transactional
+    public void adicionarCargo(CargoDTO dto) {
+        Cargo cargo = new Cargo();
+        cargo.setId(gerarId());
+        cargo.setNome(dto.getNome());
+        cargo.setSalario(dto.getSalario());
         repository.save(cargo);
     }
 
-    public void atualizarCargo(Cargo cargo) {
-        if (repository.existsById(Long.valueOf(cargo.getId()))) {
-            repository.save(cargo);
-        }
+    @Transactional
+    public void deletarPorId(Long id){
+        repository.deletarCargo(id.intValue());
+    }
+
+    private Integer gerarId() {
+        Long novoId = repository.count() + 1l;
+        return novoId.intValue();
     }
 
     public List<String> listarCargos() {
