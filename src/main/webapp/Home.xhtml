@@ -9,7 +9,8 @@
     <h:form>
         <p:menubar>
             <p:menuitem value="Cargos" action="#{homeBean.cargosPage()}"/>
-            <p:menuitem value="Restaurar Padrão" action="#{homeBean.restaurarTabela()}" />
+            <p:menuitem value="Restaurar Padrão" action="#{homeBean.restaurarTabela()}"
+                        oncomplete="if (args &amp;&amp; !args.validationFailed) { location.reload(); }" />
             <p:menuitem value="Adicionar Pessoa"/>
         </p:menubar>
     </h:form>

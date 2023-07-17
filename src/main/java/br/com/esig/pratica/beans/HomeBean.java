@@ -95,6 +95,7 @@ public class HomeBean {
 
     public void restaurarTabela(){
         pessoaSalarioService.atualizarAll();
+        dtoList = pagePessoaSalario().getContent();
     }
 
     public void nextPage() {
