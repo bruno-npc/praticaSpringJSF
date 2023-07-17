@@ -1,6 +1,5 @@
 package br.com.esig.pratica.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 

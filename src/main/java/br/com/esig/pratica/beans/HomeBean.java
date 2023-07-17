@@ -97,6 +97,16 @@ public class HomeBean {
         reloadPage();
     }
 
+    public void lastPage() {
+        currentPage = totalPages;
+        reloadPage();
+    }
+
+    public void firstPage() {
+        currentPage = 1;
+        reloadPage();
+    }
+
     public void nextPage() {
         if (currentPage < totalPages) {
             currentPage++;
@@ -117,7 +127,7 @@ public class HomeBean {
     }
 
     public void deletarPessoa() {
-        pessoaService.deletarPessoa(dto.getId());
+        pessoaService.deletarPessoa(dto.getId().intValue());
     }
 
     public void reloadPage(){

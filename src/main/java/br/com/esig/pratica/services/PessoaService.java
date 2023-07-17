@@ -1,10 +1,15 @@
 package br.com.esig.pratica.services;
 
+import br.com.esig.pratica.model.Cargo;
 import br.com.esig.pratica.model.Pessoa;
 import br.com.esig.pratica.model.PessoaSalario;
 import br.com.esig.pratica.repository.PessoaRepository;
 import br.com.esig.pratica.repository.PessoaSalarioRepository;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PessoaService {
@@ -13,11 +18,20 @@ public class PessoaService {
 
     final PessoaSalarioRepository pessoaSalarioRepository;
 
+    @Autowired
+    private PessoaSalarioService pessoaSalarioService;
+
+    @Getter
+    @Setter
+    private Long idCargo;
+
+
     public PessoaService(PessoaRepository pessoaRepository, PessoaSalarioRepository pessoaSalarioRepository) {
         this.pessoaRepository = pessoaRepository;
         this.pessoaSalarioRepository = pessoaSalarioRepository;
     }
 
+    @Transactional
     public void atualizarPessoa(Pessoa pessoaEdit) {
         Pessoa pessoaExistente = pessoaRepository.findById(pessoaEdit.getId()).orElse(null);
         PessoaSalario pessoaSalario = pessoaSalarioRepository.findByPessoaId(pessoaEdit.getId());
@@ -26,26 +40,27 @@ public class PessoaService {
             pessoaRepository.save(pessoaEdit);
             pessoaSalarioRepository.save(pessoaSalario);
         }
-        else {
-            System.out.println("Erro, editar pessoa.");
-        }
     }
 
-    public void inserirPessoa(Pessoa novaPessoa) {
-        try {
-            pessoaRepository.save(novaPessoa);
-        } catch (Exception e) {
-            System.out.println("Erro ao inserir pessoa: " + e.getMessage());
-        }
+    @Transactional
+    public void inserirPessoa(Pessoa pessoa) {
+        pessoa.setId(pessoaRepository.count() + 1);
+        pessoaRepository.save(pessoa);
+        pessoaSalarioService.atualizar(pessoa);
     }
 
-    public void deletarPessoa(Long id) {
+    @Transactional
+    public void deletarPessoa(int id) {
+        Long idPessoa = (long) id;
         pessoaSalarioRepository.deleteByIdPessoa(id);
-        pessoaRepository.deleteById(id);
+        pessoaRepository.deleteByIdPessoa(idPessoa);
     }
 
     public Pessoa buscarPessoa(Long id) {
         return pessoaRepository.findById(id).orElse(null);
     }
 
+    public Cargo buscarCargo(String cargo) {
+        return pessoaRepository.buscarCargo(cargo);
+    }
 }

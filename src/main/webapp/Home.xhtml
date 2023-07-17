@@ -9,9 +9,12 @@
     <h:form>
         <p:menubar>
             <p:menuitem value="Cargos" action="#{homeBean.cargosPage()}"/>
-            <p:menuitem value="Restaurar Padrão" action="#{homeBean.restaurarTabela()}"
+            <p:menuitem value="recalcular salários" action="#{homeBean.restaurarTabela()}"
                         oncomplete="if (args &amp;&amp; !args.validationFailed) { location.reload(); }" />
-            <p:menuitem value="Adicionar Pessoa"/>
+            <p:menuitem value="Adicionar Pessoa"
+                        oncomplete="PF('modalAdd').show()"
+                        update=":modalAddFrom"
+            />
         </p:menubar>
     </h:form>
 
@@ -46,12 +49,16 @@
         </p:column>
     </p:dataTable>
 
+    <!--###############################    Paginador    ###############################-->
+
     <div style="text-align: center; padding: 20px;">
         <h:form id="paginador">
+            <h:commandButton value="Primeira" action="#{homeBean.firstPage()}"/>
             <h:commandButton value="Anterior" action="#{homeBean.previousPage}"/>
             <h:outputLabel style="padding: 10" value = "#{homeBean.currentPage}" />
             <h:commandButton value="Próxima" action="#{homeBean.nextPage}"/>
             <h:outputLabel style="padding: 10" value = "Total pages: #{homeBean.totalPages}" />
+            <h:commandButton value="Ultima" action="#{homeBean.lastPage()}"/>
         </h:form>
     </div>
 
@@ -147,6 +154,55 @@
                         <p:commandButton value="Fechar" type="button" onclick="PF('modalFuncionario').hide()" />
                         <p:commandButton value="Salvar" action="#{pessoaBean.atualizarPessoa()}"
                                          oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modalFuncionario').hide(); location.reload(); }" />
+                    </h:panelGroup>
+                </f:facet>
+            </h:panelGrid>
+        </h:form>
+    </p:dialog>
+
+    <!-- Modal Adicionar Pessoas -->
+    <p:dialog widgetVar="modalAdd" modal="true" resizable="false" header="Editar Funcionario">
+        <h:form id="modalAddFrom">
+            <h:panelGrid id = "panelAdd" columns = "2" border = "1"
+                         cellpadding = "10" cellspacing = "1">
+
+                <h:outputLabel value = "Nome" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.nome}" />
+
+                <h:outputLabel value="Cidade" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.cidade}" />
+
+                <h:outputLabel value="Email" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.email}" />
+
+                <h:outputLabel value="CEP" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.cep}" />
+
+                <h:outputLabel value="Endereço" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.endereco}" />
+
+                <h:outputLabel value="País" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.pais}" />
+
+                <h:outputLabel value="Usuário" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.usuario}" />
+
+                <h:outputLabel value="Telefone" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.telefone}" />
+
+                <h:outputLabel value="Data de Nascimento" />
+                <p:inputText value="#{pessoaBean.pessoaDTO.dataNascimento}" />
+
+                <h:outputLabel value="Cargo" />
+                <p:selectOneMenu value="#{pessoaBean.pessoaDTO.cargoNome}">
+                    <f:selectItems value="#{cargoBean.listaCargo}" var="cargo" itemValue="#{cargo}" itemLabel="#{cargo}" />
+                </p:selectOneMenu>
+
+                <f:facet name = "footer">
+                    <h:panelGroup style = "display:block; text-align:center">
+                        <p:commandButton value="Fechar" type="button" onclick="PF('modalAdd').hide()" />
+                        <p:commandButton value="Salvar" action="#{pessoaBean.adicionarPessoa()}"
+                                         oncomplete="if (args &amp;&amp; !args.validationFailed) { PF('modalAdd').hide(); location.reload(); }" />
                     </h:panelGroup>
                 </f:facet>
             </h:panelGrid>

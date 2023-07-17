@@ -9,8 +9,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
-
 public interface PessoaSalarioRepository extends JpaRepository<PessoaSalario, Long>{
 
     @Query("SELECT new br.com.esig.pratica.dto.PessoaSalarioDTO(ps.pessoa.id, ps.nome, c.nome, ps.salario) " +
@@ -24,5 +22,9 @@ public interface PessoaSalarioRepository extends JpaRepository<PessoaSalario, Lo
 
     @Modifying
     @Query("DELETE FROM PessoaSalario ps WHERE ps.pessoa.id = :id")
-    void deleteByIdPessoa(@Param("id") Long id);
+    void deleteByIdPessoa(@Param("id") int id);
+
+    @Modifying
+    @Query("UPDATE PessoaSalario ps SET ps.salario = :salario WHERE ps.pessoa.id = :id")
+    void corrigirSalario(@Param("salario") String salario, @Param("id") Long id);
 }

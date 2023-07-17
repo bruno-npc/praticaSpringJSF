@@ -1,6 +1,7 @@
 package br.com.esig.pratica.services;
 
 import br.com.esig.pratica.dto.PessoaSalarioDTO;
+import br.com.esig.pratica.model.Pessoa;
 import br.com.esig.pratica.model.PessoaSalario;
 import br.com.esig.pratica.repository.PessoaSalarioRepository;
 import br.com.esig.pratica.services.Utils.ConverterSalario;
@@ -40,6 +41,17 @@ public class PessoaSalarioService {
     }
 
     @Transactional
+    public void atualizar(Pessoa pessoa) {
+        PessoaSalario ps = new PessoaSalario();
+        ps.setPessoa(pessoa);
+        ps.setNome(pessoa.getNome());
+        ps.setSalario(pessoa.getCargo().getSalario());
+        ps.setId(repository.count() + 1);
+
+        repository.save(ps);
+    }
+
+    @Transactional
     public void atualizarSalarioIndividual(Long idPessoa, BigDecimal salario){
         String novoSalario = conversor.formatarValorMonetarioToString(salario);
         PessoaSalario updatePessoaSalario = repository.findByPessoaId(idPessoa);
@@ -55,5 +67,10 @@ public class PessoaSalarioService {
 
     public String converterToString(BigDecimal salarioEdit) {
         return conversor.formatarValorMonetarioToString(salarioEdit);
+    }
+
+    @Transactional
+    public void corrigirSalario(String salario, Long id) {
+        repository.corrigirSalario(salario, id);
     }
 }
