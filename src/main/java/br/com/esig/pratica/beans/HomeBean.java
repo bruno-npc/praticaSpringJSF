@@ -13,11 +13,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import javax.annotation.PostConstruct;
+import javax.el.MethodExpression;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Named(value = "homeBean")
@@ -28,18 +31,30 @@ public class HomeBean {
     private PessoaSalarioService pessoaSalarioService;
 
     @Getter
-    private List<PessoaSalarioDTO> dto;
+    @Setter
+    private PessoaSalarioDTO dto = new PessoaSalarioDTO(0l, "", "", "");
+
+    @Getter
+    private List<PessoaSalarioDTO> dtoList;
 
     @Getter
     @Setter
-    private String nome;
+    private String search;
 
+    @Getter
+    @Setter
+    private BigDecimal salarioEdit;
+
+    @Getter
+    @Setter
+    private int pageSize = 10;
+
+    @Getter
     private int currentPage;
+
+    @Getter
     private int totalPages;
 
-    @Getter
-    @Setter
-    private PessoaSalario pessoaSalarioUpdate = new PessoaSalario();
 
     @PostConstruct
     public void init() {
@@ -48,32 +63,63 @@ public class HomeBean {
     }
 
     private void loadPage() {
-        Pageable pageable = createPageable(currentPage, 10, "id", Sort.Direction.DESC);
-        Page<PessoaSalarioDTO> page = pessoaSalarioService.pessoaSalarioPage(pageable);
-        dto = page.getContent();
+        Page<PessoaSalarioDTO> page = pagePessoaSalario();
+        dtoList = page.getContent();
         totalPages = page.getTotalPages();
     }
 
-    public void selecionarPessoa (Long id){
-        pessoaSalarioUpdate.setId(id);
+    public void atualizarPessoaSalario(){
+        pessoaSalarioService.atualizarSalarioIndividual(dto.getId(), getSalarioEdit());
+        dtoList = pagePessoaSalario().getContent();
     }
 
-    public void atualizarPessoaSalario() {
-        pessoaSalarioService.atualizar(pessoaSalarioUpdate.getId(), nome);
+    public void selecionarPessoa (Long id, String nome, String pessoaSalario){
+        dto.setNome(nome);
+        dto.setSalario(pessoaSalario);
+        dto.setId(id);
+        String valorSemSimbolo = pessoaSalario.replace("R$", "");
+        String valorSemPonto = valorSemSimbolo.replace(".", "");
+        String valorSemVirgula = valorSemPonto.replace(",", ".");
+        String valorSemEspaco = valorSemVirgula.replace(" ", "");
+        salarioEdit = new BigDecimal(valorSemEspaco);
     }
 
-
-    private Pageable createPageable(int pageNumber, int pageSize, String sortBy, Sort.Direction sortDirection) {
-        Sort sort = Sort.by(sortDirection, sortBy);
-        return PageRequest.of(pageNumber - 1, pageSize, sort);
-    }
-
-    public void alterarPage() {
+    public void cargosPage() {
         try {
             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
             ec.redirect(ec.getRequestContextPath() + "/Cargo.xhtml");
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void restaurarTabela(){
+        pessoaSalarioService.atualizarAll();
+    }
+
+    public void nextPage() {
+        if (currentPage < totalPages) {
+            currentPage++;
+            dtoList = pagePessoaSalario().getContent();
+        }
+    }
+
+    public void previousPage() {
+        if (currentPage > 1) {
+            currentPage--;
+            dtoList = pagePessoaSalario().getContent();
+        }
+    }
+
+    private Pageable createPageable(int pageNumber, int pageSize, String sortBy, Sort.Direction sortDirection) {
+        Sort sort = Sort.by(sortDirection, sortBy);
+        return PageRequest.of(pageNumber - 1, pageSize, sort);
+    }
+
+    public void pesquisa(String pesquisa) {
+    }
+
+    private Page<PessoaSalarioDTO> pagePessoaSalario (){
+        return pessoaSalarioService.pessoaSalarioPage(getSearch(), createPageable(currentPage, 10, "id", Sort.Direction.DESC));
     }
 }

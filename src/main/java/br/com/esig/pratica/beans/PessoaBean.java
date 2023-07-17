@@ -15,10 +15,11 @@ import javax.inject.Named;
 import java.io.IOException;
 import java.util.List;
 
-@Named(value = "pessoaB")
+@Named(value = "pessoaBean")
 @ViewScoped
 public class PessoaBean {
 
+/*
     @Autowired
     private PessoaService pessoaService;
 
@@ -31,7 +32,7 @@ public class PessoaBean {
     @PostConstruct
     public void init() {
         currentPage = 1;
-        loadPage();
+        //loadPage();
     }
 
     private void loadPage() {
@@ -62,12 +63,5 @@ public class PessoaBean {
         return PageRequest.of(pageNumber - 1, pageSize, sort);
     }
 
-    public void alterarSalarios() {
-        try {
-            ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-            ec.redirect(ec.getRequestContextPath() + "/Cargo.xhtml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+ */
 }

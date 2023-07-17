@@ -1,34 +1,53 @@
 package br.com.esig.pratica.services;
 
 import br.com.esig.pratica.dto.PessoaSalarioDTO;
+import br.com.esig.pratica.model.PessoaSalario;
 import br.com.esig.pratica.repository.PessoaSalarioRepository;
+import br.com.esig.pratica.services.Utils.ConverterSalario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class PessoaSalarioService {
 
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
     final PessoaSalarioRepository repository;
 
-    public PessoaSalarioService(PessoaSalarioRepository repository) {
+    private final ConverterSalario conversor;
+
+    public PessoaSalarioService(PessoaSalarioRepository repository, ConverterSalario conversor) {
         this.repository = repository;
+        this.conversor = conversor;
     }
 
-    public Page<PessoaSalarioDTO> pessoaSalarioPage(Pageable pageable){
-        return repository.findAllPessoaSalarioDTOPage(pageable);
+    public Page<PessoaSalarioDTO> pessoaSalarioPage(String pesquisa, Pageable pageable){
+        return repository.findAllPessoaSalarioDTOPage(
+                pesquisa,
+                pageable);
     }
 
     public void atualizarAll() {
-        String sql = "SELECT insert_pessoa_salario()";
+        String sql = "SELECT update_pessoa_salario()";
         jdbcTemplate.execute(sql);
     }
 
+    public void atualizarSalarioIndividual(Long idPessoa, BigDecimal salario){
+        String novoSalario = conversor.formatarValorMonetarioToString(salario);
+        PessoaSalario updatePessoaSalario = repository.findByPessoaId(idPessoa);
+        if (updatePessoaSalario != null) {
+            updatePessoaSalario.setSalario(novoSalario);
+            repository.save(updatePessoaSalario);
+        }
+    }
+
+    public BigDecimal converterToNumerico (String valor){
+        return conversor.converterMonetarioToBigDecimal(valor);
+    }
 
 }
